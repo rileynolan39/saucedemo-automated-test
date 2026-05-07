@@ -2,22 +2,54 @@ import LoginPage from '../pages/LoginPage';
 
 describe('Login Tests', () => {
 
-  it('should login with valid credentials', () => {
+  beforeEach(() => {
     LoginPage.visit();
-    LoginPage.enterUsername('standard_user');
-    LoginPage.enterPassword('secret_sauce');
-    LoginPage.clickLogin();
-
-    cy.url().should('include', '/inventory');
   });
 
-  it('should show error for invalid login', () => {
-    LoginPage.visit();
-    LoginPage.enterUsername('invalid_user');
-    LoginPage.enterPassword('wrong_pass');
-    LoginPage.clickLogin();
+  it('should login successfully with valid credentials', () => {
 
-    cy.contains('Username and password do not match');
+    cy.fixture('users').then((users) => {
+
+      LoginPage.login(
+        users.validUser.username,
+        users.validUser.password
+      );
+
+      cy.url().should('include', '/inventory');
+
+      cy.get('.inventory_list')
+        .should('be.visible');
+    });
+  });
+
+  it('should show error for invalid credentials', () => {
+
+    cy.fixture('users').then((users) => {
+
+      LoginPage.login(
+        users.invalidUser.username,
+        users.invalidUser.password
+      );
+
+      LoginPage.getErrorMessage()
+        .should('contain',
+          'Username and password do not match');
+    });
+  });
+
+  it('should prevent locked out user from logging in', () => {
+
+    cy.fixture('users').then((users) => {
+
+      LoginPage.login(
+        users.lockedUser.username,
+        users.lockedUser.password
+      );
+
+      LoginPage.getErrorMessage()
+        .should('contain',
+          'Sorry, this user has been locked out.');
+    });
   });
 
 });

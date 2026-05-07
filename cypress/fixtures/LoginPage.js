@@ -1,18 +1,29 @@
 class LoginPage {
+
   visit() {
     cy.visit('/');
   }
 
-  enterUsername(username) {
+  typeUsername(username) {
     cy.get('[data-test="username"]').type(username);
   }
 
-  enterPassword(password) {
+  typePassword(password) {
     cy.get('[data-test="password"]').type(password);
   }
 
   clickLogin() {
     cy.get('[data-test="login-button"]').click();
+  }
+
+  login(username, password) {
+    this.typeUsername(username);
+    this.typePassword(password);
+    this.clickLogin();
+  }
+
+  getErrorMessage() {
+    return cy.get('[data-test="error"]');
   }
 }
 
