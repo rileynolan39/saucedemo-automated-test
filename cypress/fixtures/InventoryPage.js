@@ -16,6 +16,20 @@ class InventoryPage {
     cy.get('.shopping_cart_badge')
       .should('contain', count);
   }
+
+  selectSortOption(option) {
+    cy.get('[data-test="product-sort-container"]')
+      .select(option);
+  }
+
+  getItemNames() {
+    return cy.get('.inventory_item_name');
+  }
+
+  getItemPrices() {
+    return cy.get('.inventory_item_price');
+  }
+
 }
 
 export default new InventoryPage();

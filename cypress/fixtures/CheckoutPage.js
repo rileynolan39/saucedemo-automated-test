@@ -24,6 +24,10 @@ class CheckoutPage {
     cy.contains('Thank you for your order!')
       .should('be.visible');
   }
+
+  getErrorMessage() {
+  return cy.get('[data-test="error"]');
+  }
 }
 
 export default new CheckoutPage();
