@@ -30,6 +30,16 @@ class InventoryPage {
     return cy.get('.inventory_item_price');
   }
 
+  removeBackpackFromCart() {
+  cy.get('[data-test="remove-sauce-labs-backpack"]')
+    .click();
+  }
+
+  verifyCartBadgeDoesNotExist() {
+    cy.get('.shopping_cart_badge')
+    .should('not.exist');
+  }
+
 }
 
 export default new InventoryPage();
